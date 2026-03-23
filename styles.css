@@ -195,6 +195,30 @@ header h1 {
   margin-top: 6px;
 }
 
+/* === Access / Distance === */
+.access-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.access-item label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* === Packing === */
+.packing-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.packing-item label:first-child {
+  font-weight: 600;
+}
+
 /* === Stairs === */
 .stairs-group {
   display: flex;

@@ -42,7 +42,7 @@
         <p class="hint">2-hour minimum</p>
       </section>
 
-      <!-- Step 4: Scheduling Surcharge -->
+      <!-- Step 4: Scheduling & Day Premium -->
       <section class="card">
         <h2>4. Scheduling</h2>
         <div class="toggle-group">
@@ -50,11 +50,40 @@
           <button class="toggle-btn schedule-btn" data-schedule="next-day">Next-Day (+10%)</button>
           <button class="toggle-btn schedule-btn" data-schedule="same-day">Same-Day (+20%)</button>
         </div>
+        <div class="toggle-group" style="margin-top: 10px;">
+          <button class="toggle-btn day-btn active" data-day="weekday">Weekday</button>
+          <button class="toggle-btn day-btn" data-day="weekend">Weekend (+15%)</button>
+          <button class="toggle-btn day-btn" data-day="holiday">Holiday (+25%)</button>
+        </div>
       </section>
 
-      <!-- Step 5: Stairs -->
+      <!-- Step 5: Distance & Access -->
       <section class="card">
-        <h2>5. Stairs</h2>
+        <h2>5. Distance &amp; Access Fees</h2>
+        <div class="access-grid">
+          <div class="access-item">
+            <label>Long Carry (75+ ft from truck)</label>
+            <div class="toggle-group">
+              <button class="toggle-btn carry-btn active" data-carry="none">None</button>
+              <button class="toggle-btn carry-btn" data-carry="75">75–150 ft ($50)</button>
+              <button class="toggle-btn carry-btn" data-carry="150">150+ ft ($75)</button>
+            </div>
+          </div>
+          <div class="access-item" style="margin-top: 12px;">
+            <label>Extra Mileage (beyond 30-mi radius)</label>
+            <div class="stepper small">
+              <button class="stepper-btn" id="milesDown">−</button>
+              <span class="stepper-value" id="milesValue">0</span>
+              <button class="stepper-btn" id="milesUp">+</button>
+            </div>
+            <p class="hint">Extra miles beyond 30-mi radius @ $2.00/mi</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 6: Stairs -->
+      <section class="card">
+        <h2>6. Stairs</h2>
         <div class="stairs-group">
           <div class="stairs-location">
             <label>Pickup — extra flights (after 1st)</label>
@@ -75,7 +104,7 @@
         </div>
       </section>
 
-      <!-- Step 6: Heavy / Specialty Items -->
+      <!-- Step 7: Heavy / Specialty Items -->
       <section class="card">
         <h2>6. Heavy &amp; Specialty Items</h2>
         <div class="specialty-grid">
@@ -126,9 +155,46 @@
         </div>
       </section>
 
-      <!-- Step 7: Customer Info -->
+      <!-- Step 8: Packing Services -->
       <section class="card">
-        <h2>7. Customer Info <span class="optional">(optional)</span></h2>
+        <h2>8. Packing Services</h2>
+        <div class="packing-grid">
+          <div class="packing-item">
+            <label class="checkbox-label">
+              <input type="checkbox" id="packingMaterials"> Packing Materials
+            </label>
+            <p class="hint">Boxes, tape, bubble wrap — $75 small / $125 medium / $150 large</p>
+            <div class="toggle-group packing-size-group" id="packingSizeGroup" style="margin-top: 8px; display: none;">
+              <button class="toggle-btn packing-size-btn active" data-packsize="small">Small ($75)</button>
+              <button class="toggle-btn packing-size-btn" data-packsize="medium">Medium ($125)</button>
+              <button class="toggle-btn packing-size-btn" data-packsize="large">Large ($150)</button>
+            </div>
+          </div>
+          <div class="packing-item" style="margin-top: 12px;">
+            <label>Packing Labor Hours</label>
+            <div class="stepper small">
+              <button class="stepper-btn" id="packLaborDown">−</button>
+              <span class="stepper-value" id="packLaborValue">0</span>
+              <button class="stepper-btn" id="packLaborUp">+</button>
+            </div>
+            <p class="hint">$50/hr per packer</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 9: Cancellation -->
+      <section class="card">
+        <h2>9. Cancellation Fee</h2>
+        <div class="toggle-group">
+          <button class="toggle-btn cancel-btn active" data-cancel="none">No Fee</button>
+          <button class="toggle-btn cancel-btn" data-cancel="late">Late Cancel &lt;24hrs ($100)</button>
+          <button class="toggle-btn cancel-btn" data-cancel="noshow">No-Show ($150)</button>
+        </div>
+      </section>
+
+      <!-- Step 10: Customer Info -->
+      <section class="card">
+        <h2>10. Customer Info <span class="optional">(optional)</span></h2>
         <div class="form-grid">
           <input type="text" id="custName" placeholder="Customer Name">
           <input type="tel" id="custPhone" placeholder="Phone">

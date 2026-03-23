@@ -1,6 +1,6 @@
 // ============================================================
 // KBA Movers — Estimate Calculator
-// All proposed rates from pricing sheet
+// All proposed rates from pricing sheet + new surcharges
 // ============================================================
 
 const PRICING = {
@@ -17,35 +17,68 @@ const PRICING = {
   },
 };
 
-const SURCHARGES = {
+const SCHEDULE_SURCHARGES = {
   'same-day':  0.20,
   'next-day':  0.10,
   'standard':  0.00,
 };
 
-const SPECIALTY = {
-  piano:       { flat: 175, stairs: 300 },
-  med1:        { flat: 50,  stairs: 75  },   // 300-450 lbs
-  med2:        { flat: 275, stairs: 400 },   // 450-600 lbs
-  heavy:       { flat: 600, stairs: 750 },   // 600+ lbs
+const DAY_SURCHARGES = {
+  'weekday':  0.00,
+  'weekend':  0.15,
+  'holiday':  0.25,
 };
 
-const STAIR_FEE = 50; // per flight after 1st
-const HAH_FEE   = 0.29;
-const MIN_HOURS  = 2;
+const SPECIALTY = {
+  piano: { flat: 175, stairs: 300 },
+  med1:  { flat: 50,  stairs: 75  },   // 300-450 lbs
+  med2:  { flat: 275, stairs: 400 },   // 450-600 lbs
+  heavy: { flat: 600, stairs: 750 },   // 600+ lbs
+};
+
+const LONG_CARRY = {
+  'none': 0,
+  '75':   50,   // 75-150 ft
+  '150':  75,   // 150+ ft
+};
+
+const PACKING_MATERIALS = {
+  'small':  75,
+  'medium': 125,
+  'large':  150,
+};
+
+const CANCEL_FEES = {
+  'none':   0,
+  'late':   100,  // <24hr cancel
+  'noshow': 150,  // no-show
+};
+
+const STAIR_FEE       = 50;    // per flight after 1st
+const FUEL_PER_MILE   = 2.00;  // per mile beyond 30-mi radius
+const PACK_LABOR_RATE = 50;    // per hour per packer
+const HAH_FEE         = 0.29;
+const MIN_HOURS       = 2;
 
 // ---- State ----
 const state = {
-  jobType:    'movers-truck',
-  crew:       2,
-  hours:      2,
-  schedule:   'standard',
+  jobType:       'movers-truck',
+  crew:          2,
+  hours:         2,
+  schedule:      'standard',
+  dayType:       'weekday',
+  longCarry:     'none',
+  extraMiles:    0,
   stairsPickup:  0,
   stairsDropoff: 0,
-  piano:      0, pianoStairs:  false,
-  med1:       0, med1Stairs:   false,
-  med2:       0, med2Stairs:   false,
-  heavy:      0, heavyStairs:  false,
+  piano:         0, pianoStairs:  false,
+  med1:          0, med1Stairs:   false,
+  med2:          0, med2Stairs:   false,
+  heavy:         0, heavyStairs:  false,
+  packingMaterials: false,
+  packingSize:   'small',
+  packLaborHrs:  0,
+  cancelFee:     'none',
 };
 
 // ---- DOM refs ----
@@ -57,12 +90,16 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCrewOptions();
   bindJobType();
   bindSchedule();
+  bindDayType();
+  bindLongCarry();
+  bindPackingMaterials();
+  bindPackingSize();
+  bindCancelFee();
   bindSteppers();
   bindCheckboxes();
   bindActions();
   recalculate();
 
-  // Recalc on any input change (customer fields don't affect total)
   document.addEventListener('change', recalculate);
 });
 
@@ -73,8 +110,6 @@ function bindJobType() {
       $$('[data-job]').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       state.jobType = btn.dataset.job;
-
-      // Reset crew if invalid for new job type
       if (!PRICING[state.jobType][state.crew]) {
         state.crew = Number(Object.keys(PRICING[state.jobType])[0]);
       }
@@ -119,16 +154,74 @@ function bindSchedule() {
   });
 }
 
+// ---- Day Type Toggle ----
+function bindDayType() {
+  $$('.day-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.day-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.dayType = btn.dataset.day;
+      recalculate();
+    });
+  });
+}
+
+// ---- Long Carry Toggle ----
+function bindLongCarry() {
+  $$('.carry-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.carry-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.longCarry = btn.dataset.carry;
+      recalculate();
+    });
+  });
+}
+
+// ---- Packing Materials Toggle ----
+function bindPackingMaterials() {
+  $('#packingMaterials').addEventListener('change', (e) => {
+    state.packingMaterials = e.target.checked;
+    $('#packingSizeGroup').style.display = e.target.checked ? 'flex' : 'none';
+    recalculate();
+  });
+}
+
+function bindPackingSize() {
+  $$('.packing-size-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.packing-size-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.packingSize = btn.dataset.packsize;
+      recalculate();
+    });
+  });
+}
+
+// ---- Cancel Fee Toggle ----
+function bindCancelFee() {
+  $$('.cancel-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.cancel-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.cancelFee = btn.dataset.cancel;
+      recalculate();
+    });
+  });
+}
+
 // ---- Steppers ----
 function bindSteppers() {
   const steppers = [
     { up: 'hoursUp',         down: 'hoursDown',         value: 'hoursValue',         key: 'hours',         min: MIN_HOURS, max: 16 },
+    { up: 'milesUp',         down: 'milesDown',         value: 'milesValue',         key: 'extraMiles',    min: 0, max: 200 },
     { up: 'stairsPickupUp',  down: 'stairsPickupDown',  value: 'stairsPickupValue',  key: 'stairsPickup',  min: 0, max: 10 },
     { up: 'stairsDropoffUp', down: 'stairsDropoffDown', value: 'stairsDropoffValue', key: 'stairsDropoff', min: 0, max: 10 },
     { up: 'pianoUp',         down: 'pianoDown',         value: 'pianoValue',         key: 'piano',         min: 0, max: 5 },
     { up: 'med1Up',          down: 'med1Down',          value: 'med1Value',          key: 'med1',          min: 0, max: 10 },
     { up: 'med2Up',          down: 'med2Down',          value: 'med2Value',          key: 'med2',          min: 0, max: 10 },
     { up: 'heavyUp',         down: 'heavyDown',         value: 'heavyValue',         key: 'heavy',         min: 0, max: 10 },
+    { up: 'packLaborUp',     down: 'packLaborDown',     value: 'packLaborValue',     key: 'packLaborHrs',  min: 0, max: 20 },
   ];
 
   steppers.forEach(s => {
@@ -185,6 +278,21 @@ function recalculate() {
     subtotal += rates.travel;
   }
 
+  // Long carry
+  const carryCost = LONG_CARRY[state.longCarry];
+  if (carryCost > 0) {
+    const carryLabel = state.longCarry === '75' ? 'Long Carry (75–150 ft)' : 'Long Carry (150+ ft)';
+    lines.push({ label: carryLabel, amount: carryCost });
+    subtotal += carryCost;
+  }
+
+  // Extra mileage
+  if (state.extraMiles > 0) {
+    const mileageCost = state.extraMiles * FUEL_PER_MILE;
+    lines.push({ label: `Fuel Surcharge — ${state.extraMiles} extra mi @ $${FUEL_PER_MILE.toFixed(2)}/mi`, amount: mileageCost });
+    subtotal += mileageCost;
+  }
+
   // Stairs
   const totalFlights = state.stairsPickup + state.stairsDropoff;
   if (totalFlights > 0) {
@@ -214,16 +322,48 @@ function recalculate() {
     }
   });
 
-  // Scheduling surcharge
-  const surchargeRate = SURCHARGES[state.schedule];
-  let surchargeAmount = 0;
-  if (surchargeRate > 0) {
-    surchargeAmount = Math.round(subtotal * surchargeRate * 100) / 100;
-    const label = state.schedule === 'same-day' ? 'Same-Day Surcharge (20%)' : 'Next-Day Surcharge (10%)';
-    lines.push({ label, amount: surchargeAmount });
+  // Packing materials
+  if (state.packingMaterials) {
+    const matCost = PACKING_MATERIALS[state.packingSize];
+    lines.push({ label: `Packing Materials (${state.packingSize})`, amount: matCost });
+    subtotal += matCost;
   }
 
-  const grandTotal = subtotal + surchargeAmount;
+  // Packing labor
+  if (state.packLaborHrs > 0) {
+    const packCost = state.packLaborHrs * PACK_LABOR_RATE;
+    lines.push({ label: `Packing Labor — ${state.packLaborHrs} hr${state.packLaborHrs > 1 ? 's' : ''} @ $${PACK_LABOR_RATE}/hr`, amount: packCost });
+    subtotal += packCost;
+  }
+
+  // Cancellation fee (flat, not affected by percentage surcharges)
+  const cancelAmount = CANCEL_FEES[state.cancelFee];
+
+  // Scheduling surcharge (percentage on subtotal)
+  const scheduleRate = SCHEDULE_SURCHARGES[state.schedule];
+  let scheduleSurcharge = 0;
+  if (scheduleRate > 0) {
+    scheduleSurcharge = Math.round(subtotal * scheduleRate * 100) / 100;
+    const label = state.schedule === 'same-day' ? 'Same-Day Surcharge (20%)' : 'Next-Day Surcharge (10%)';
+    lines.push({ label, amount: scheduleSurcharge });
+  }
+
+  // Weekend / holiday surcharge (percentage on subtotal)
+  const dayRate = DAY_SURCHARGES[state.dayType];
+  let daySurcharge = 0;
+  if (dayRate > 0) {
+    daySurcharge = Math.round(subtotal * dayRate * 100) / 100;
+    const label = state.dayType === 'weekend' ? 'Weekend Premium (15%)' : 'Holiday Premium (25%)';
+    lines.push({ label, amount: daySurcharge });
+  }
+
+  // Cancel fee line (after percentages)
+  if (cancelAmount > 0) {
+    const cancelLabel = state.cancelFee === 'late' ? 'Late Cancellation Fee (<24 hrs)' : 'No-Show Fee';
+    lines.push({ label: cancelLabel, amount: cancelAmount });
+  }
+
+  const grandTotal = subtotal + scheduleSurcharge + daySurcharge + cancelAmount;
   const netAfterFee = Math.round(grandTotal * (1 - HAH_FEE) * 100) / 100;
 
   // Render
@@ -246,8 +386,8 @@ function bindActions() {
 }
 
 function copyEstimate() {
-  const custName  = $('#custName').value || 'Customer';
-  const custPhone = $('#custPhone').value;
+  const custName    = $('#custName').value || 'Customer';
+  const custPhone   = $('#custPhone').value;
   const custPickup  = $('#custPickup').value;
   const custDropoff = $('#custDropoff').value;
   const custDate    = $('#custDate').value;
@@ -280,6 +420,7 @@ function copyEstimate() {
   lines.push(`Your Net (after HAH): ${$('#netAmount').textContent}`);
   lines.push('');
   lines.push('KBA Movers — West Des Moines, IA');
+  lines.push('www.kbamoving.com');
 
   const text = lines.join('\n');
 
@@ -288,7 +429,6 @@ function copyEstimate() {
     btn.textContent = 'Copied!';
     setTimeout(() => { btn.textContent = 'Copy Estimate'; }, 2000);
   }).catch(() => {
-    // Fallback
     const ta = document.createElement('textarea');
     ta.value = text;
     document.body.appendChild(ta);
