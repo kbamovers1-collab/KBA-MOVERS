@@ -1,0 +1,385 @@
+/* === Reset & Base === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #1a3a5c;
+  --accent: #e8a83e;
+  --accent-hover: #d4952e;
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --text: #1a1a1a;
+  --text-light: #666;
+  --border: #dde1e6;
+  --success: #2e7d32;
+  --radius: 10px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.app {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* === Header === */
+header {
+  text-align: center;
+  padding: 24px 0 16px;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 2px;
+}
+
+.tagline {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+/* === Cards === */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 14px;
+}
+
+.card h2 .optional {
+  font-weight: 400;
+  color: var(--text-light);
+  font-size: 0.85rem;
+}
+
+/* === Toggle Buttons === */
+.toggle-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.toggle-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 16px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.toggle-btn:hover {
+  border-color: var(--accent);
+}
+
+.toggle-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* === Crew Options === */
+.crew-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.crew-btn {
+  padding: 12px 8px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.crew-btn:hover {
+  border-color: var(--accent);
+}
+
+.crew-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.crew-btn .crew-size {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.crew-btn .crew-price {
+  font-size: 0.8rem;
+  margin-top: 2px;
+  opacity: 0.8;
+}
+
+/* === Stepper === */
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.stepper.small {
+  gap: 10px;
+}
+
+.stepper-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepper.small .stepper-btn {
+  width: 34px;
+  height: 34px;
+  font-size: 1rem;
+}
+
+.stepper-btn:hover {
+  background: var(--accent);
+}
+
+.stepper-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  min-width: 30px;
+  text-align: center;
+}
+
+.stepper.small .stepper-value {
+  font-size: 1.1rem;
+  min-width: 24px;
+}
+
+.hint {
+  color: var(--text-light);
+  font-size: 0.8rem;
+  margin-top: 6px;
+}
+
+/* === Stairs === */
+.stairs-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.stairs-location {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stairs-location label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* === Specialty Items === */
+.specialty-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 500px) {
+  .specialty-grid { grid-template-columns: 1fr; }
+}
+
+.specialty-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 8px;
+}
+
+.specialty-item > label:first-child {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.checkbox-label {
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.checkbox-label input {
+  accent-color: var(--primary);
+}
+
+/* === Customer Form === */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.form-grid textarea,
+.form-grid input[type="text"]:nth-child(n+3) {
+  grid-column: 1 / -1;
+}
+
+.form-grid textarea {
+  grid-column: 1 / -1;
+}
+
+.form-grid input,
+.form-grid textarea {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border 0.15s;
+}
+
+.form-grid input:focus,
+.form-grid textarea:focus {
+  border-color: var(--primary);
+}
+
+/* === Estimate Summary === */
+.estimate-card {
+  border: 2px solid var(--primary);
+}
+
+#summaryBody {
+  margin-bottom: 12px;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--bg);
+}
+
+.summary-line.indent {
+  padding-left: 16px;
+  color: var(--text-light);
+  font-size: 0.85rem;
+}
+
+.estimate-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0 8px;
+  border-top: 2px solid var(--primary);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.estimate-net {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--success);
+}
+
+/* === Action Buttons === */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.action-buttons button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+#btnCopy {
+  background: var(--accent);
+  color: #fff;
+}
+
+#btnCopy:hover {
+  background: var(--accent-hover);
+}
+
+#btnPrint {
+  background: var(--primary);
+  color: #fff;
+}
+
+#btnPrint:hover {
+  background: #14304d;
+}
+
+/* === Footer === */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  color: var(--text-light);
+  font-size: 0.8rem;
+}
+
+/* === Print Styles === */
+@media print {
+  body { background: #fff; }
+  .app { max-width: 100%; padding: 0; }
+  header { padding: 10px 0; }
+  .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+  .action-buttons, .toggle-group, .stepper, .crew-options,
+  .stairs-group, .specialty-grid, .form-grid,
+  section.card:not(.estimate-card):not(:nth-child(7)) { display: none; }
+  section.card:nth-child(7) .form-grid { display: grid; }
+  .estimate-card { border: 2px solid var(--primary); }
+  footer { display: none; }
+}
