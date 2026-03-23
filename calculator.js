@@ -11,9 +11,9 @@ const PRICING = {
     4: { base: 825, addlHr: 350, travel: 365 },
   },
   'labor-only': {
-    2: { base: 420, addlHr: 165, travel: 0 },
-    3: { base: 520, addlHr: 215, travel: 0 },
-    4: { base: 650, addlHr: 295, travel: 0 },
+    2: { base: 625, addlHr: 220, travel: 0 },
+    3: { base: 735, addlHr: 275, travel: 0 },
+    4: { base: 845, addlHr: 495, travel: 0 },
   },
 };
 
