@@ -386,6 +386,39 @@ header h1 {
   background: #14304d;
 }
 
+/* === Long Distance === */
+.ld-distance-tag {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 12px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.ld-addons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ld-input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  width: 180px;
+  transition: border 0.15s;
+}
+
+.ld-input:focus {
+  border-color: var(--primary);
+}
+
 /* === Footer === */
 footer {
   text-align: center;
@@ -394,16 +427,21 @@ footer {
   font-size: 0.8rem;
 }
 
+.dot-info {
+  font-size: 0.75rem;
+  margin-top: 4px;
+  color: var(--text-light);
+}
+
 /* === Print Styles === */
 @media print {
   body { background: #fff; }
   .app { max-width: 100%; padding: 0; }
   header { padding: 10px 0; }
   .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
-  .action-buttons, .toggle-group, .stepper, .crew-options,
-  .stairs-group, .specialty-grid, .form-grid,
-  section.card:not(.estimate-card):not(:nth-child(7)) { display: none; }
-  section.card:nth-child(7) .form-grid { display: grid; }
+  .action-buttons { display: none; }
   .estimate-card { border: 2px solid var(--primary); }
-  footer { display: none; }
+  #localSection .card:not(.estimate-card) { display: none; }
+  #longDistanceSection .card:not(.estimate-card) { display: none; }
+  footer .dot-info { display: block; }
 }
