@@ -439,6 +439,35 @@ footer {
   color: var(--text-light);
 }
 
+/* === FAQ Section === */
+.faq-section details {
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+
+.faq-section details:last-child {
+  border-bottom: none;
+}
+
+.faq-section summary {
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--primary);
+  padding: 4px 0;
+}
+
+.faq-section summary:hover {
+  color: var(--accent);
+}
+
+.faq-section details p {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
 /* === Print Styles === */
 @media print {
   body { background: #fff; }

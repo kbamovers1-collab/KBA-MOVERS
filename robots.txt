@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /calculator.js
 
 Sitemap: https://kbamoving.com/sitemap.xml
