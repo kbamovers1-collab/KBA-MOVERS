@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Moving Estimate Calculator | KBA Movers</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">KBA MOVERS</a>
+      <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle">Services</a>
+          <div class="dropdown-content">
+            <a href="services/local-moving.html">Local Moving</a>
+            <a href="services/long-distance-moving.html">Long-Distance Moving</a>
+            <a href="services/residential-moving.html">Residential Moving</a>
+            <a href="services/commercial-moving.html">Commercial Moving</a>
+            <a href="services/packing-services.html">Packing Services</a>
+            <a href="services/specialty-item-moving.html">Specialty Item Moving</a>
+            <a href="services/junk-cleanouts.html">Junk Cleanouts</a>
+            <a href="services/emergency-moves.html">Emergency Moves</a>
+            <a href="services/labor-only-moving.html">Labor-Only Moving Help</a>
+            <a href="services/event-setup-logistics.html">Event Setup &amp; Logistics</a>
+            <a href="services/college-student-moves.html">College Student Moves</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle">Service Areas</a>
+          <div class="dropdown-content">
+            <a href="service-areas/west-des-moines.html">West Des Moines</a>
+            <a href="service-areas/des-moines.html">Des Moines</a>
+            <a href="service-areas/ankeny.html">Ankeny</a>
+            <a href="service-areas/urbandale.html">Urbandale</a>
+            <a href="service-areas/ames.html">Ames</a>
+            <a href="service-areas/surrounding-areas.html">Surrounding Areas</a>
+          </div>
+        </div>
+        <a href="calculator.html">Free Estimate</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app">
+    <main>
+      <!-- Step 1: Job Type -->
+      <section class="card">
+        <h2>1. Job Type</h2>
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-job="movers-truck">Movers + Truck</button>
+          <button class="toggle-btn" data-job="labor-only">Labor Only</button>
+          <button class="toggle-btn" data-job="long-distance">Long Distance</button>
+        </div>
+      </section>
+
+      <!-- Long Distance Config (hidden by default) -->
+      <div id="longDistanceSection" style="display: none;">
+        <section class="card">
+          <h2>Home Size</h2>
+          <div class="toggle-group">
+            <button class="toggle-btn home-btn active" data-home="studio">Studio</button>
+            <button class="toggle-btn home-btn" data-home="1br">1 BR</button>
+            <button class="toggle-btn home-btn" data-home="2br">2 BR</button>
+            <button class="toggle-btn home-btn" data-home="3br">3 BR</button>
+            <button class="toggle-btn home-btn" data-home="4br">4+ BR</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Distance (miles)</h2>
+          <div class="stepper">
+            <button class="stepper-btn" id="ldMilesDown10">−10</button>
+            <button class="stepper-btn" id="ldMilesDown">−</button>
+            <span class="stepper-value" id="ldMilesValue">100</span>
+            <button class="stepper-btn" id="ldMilesUp">+</button>
+            <button class="stepper-btn" id="ldMilesUp10">+10</button>
+          </div>
+          <p class="hint">One-way driving distance</p>
+          <div class="ld-distance-tag" id="ldDistanceTag"></div>
+        </section>
+
+        <section class="card">
+          <h2>Estimated Weight (lbs)</h2>
+          <div class="stepper">
+            <button class="stepper-btn" id="ldWeightDown500">−500</button>
+            <button class="stepper-btn" id="ldWeightDown">−100</button>
+            <span class="stepper-value" id="ldWeightValue">5000</span>
+            <button class="stepper-btn" id="ldWeightUp">+100</button>
+            <button class="stepper-btn" id="ldWeightUp500">+500</button>
+          </div>
+          <p class="hint">Minimum 2,000 lbs &mdash; <span id="ldWeightHint">Typical for 1-2 BR home</span></p>
+        </section>
+
+        <section class="card">
+          <h2>Crew Size</h2>
+          <div class="toggle-group">
+            <button class="toggle-btn ld-crew-btn active" data-ldcrew="2">2-Person</button>
+            <button class="toggle-btn ld-crew-btn" data-ldcrew="3">3-Person</button>
+            <button class="toggle-btn ld-crew-btn" data-ldcrew="4">4-Person</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Long Distance Add-Ons</h2>
+          <div class="ld-addons">
+            <label class="checkbox-label">
+              <input type="checkbox" id="ldFullPacking"> Full Packing Service ($60/hr per packer)
+            </label>
+            <div id="ldPackingHoursGroup" style="display: none; margin: 8px 0 0 24px;">
+              <label>Packing Hours</label>
+              <div class="stepper small">
+                <button class="stepper-btn" id="ldPackHrsDown">−</button>
+                <span class="stepper-value" id="ldPackHrsValue">0</span>
+                <button class="stepper-btn" id="ldPackHrsUp">+</button>
+              </div>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="ldPackingMaterials"> Packing Materials ($200 small / $350 medium / $500 large)
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="ldStorage"> Storage-in-Transit ($150/month)
+            </label>
+            <div id="ldStorageMonthsGroup" style="display: none; margin: 8px 0 0 24px;">
+              <label>Months</label>
+              <div class="stepper small">
+                <button class="stepper-btn" id="ldStorageDown">−</button>
+                <span class="stepper-value" id="ldStorageValue">1</span>
+                <button class="stepper-btn" id="ldStorageUp">+</button>
+              </div>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="ldShuttle"> Shuttle Service — truck can't access ($300)
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="ldOvernight"> Driver Overnight/Hotel ($175/night)
+            </label>
+            <div id="ldOvernightGroup" style="display: none; margin: 8px 0 0 24px;">
+              <label>Nights</label>
+              <div class="stepper small">
+                <button class="stepper-btn" id="ldNightsDown">−</button>
+                <span class="stepper-value" id="ldNightsValue">1</span>
+                <button class="stepper-btn" id="ldNightsUp">+</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Insurance / Valuation</h2>
+          <div class="toggle-group">
+            <button class="toggle-btn insurance-btn active" data-insurance="basic">Basic ($0.60/lb — free)</button>
+            <button class="toggle-btn insurance-btn" data-insurance="full">Full Value (1.5% of declared)</button>
+          </div>
+          <div id="ldDeclaredGroup" style="display: none; margin-top: 12px;">
+            <label>Declared Value ($)</label>
+            <input type="number" id="ldDeclaredValue" placeholder="e.g. 25000" value="25000" class="ld-input">
+          </div>
+        </section>
+      </div>
+
+      <!-- Local Move Sections (hidden when long-distance selected) -->
+      <div id="localSection">
+      <!-- Step 2: Crew Size -->
+      <section class="card">
+        <h2>2. Crew Size</h2>
+        <div class="crew-options" id="crewOptions">
+          <!-- populated by JS -->
+        </div>
+      </section>
+
+      <!-- Step 3: Hours -->
+      <section class="card">
+        <h2>3. Estimated Hours</h2>
+        <div class="stepper">
+          <button class="stepper-btn" id="hoursDown">−</button>
+          <span class="stepper-value" id="hoursValue">2</span>
+          <button class="stepper-btn" id="hoursUp">+</button>
+        </div>
+        <p class="hint">2-hour minimum</p>
+      </section>
+
+      <!-- Step 4: Scheduling & Day Premium -->
+      <section class="card">
+        <h2>4. Scheduling</h2>
+        <div class="toggle-group">
+          <button class="toggle-btn schedule-btn active" data-schedule="standard">Standard</button>
+          <button class="toggle-btn schedule-btn" data-schedule="next-day">Next-Day (+10%)</button>
+          <button class="toggle-btn schedule-btn" data-schedule="same-day">Same-Day (+20%)</button>
+        </div>
+        <div class="toggle-group" style="margin-top: 10px;">
+          <button class="toggle-btn day-btn active" data-day="weekday">Weekday</button>
+          <button class="toggle-btn day-btn" data-day="weekend">Weekend (+15%)</button>
+          <button class="toggle-btn day-btn" data-day="holiday">Holiday (+25%)</button>
+        </div>
+      </section>
+
+      <!-- Step 5: Distance & Access -->
+      <section class="card">
+        <h2>5. Distance &amp; Access Fees</h2>
+        <div class="access-grid">
+          <div class="access-item">
+            <label>Long Carry (75+ ft from truck)</label>
+            <div class="toggle-group">
+              <button class="toggle-btn carry-btn active" data-carry="none">None</button>
+              <button class="toggle-btn carry-btn" data-carry="75">75–150 ft ($50)</button>
+              <button class="toggle-btn carry-btn" data-carry="150">150+ ft ($75)</button>
+            </div>
+          </div>
+          <div class="access-item" style="margin-top: 12px;">
+            <label>Extra Mileage (beyond 30-mi radius)</label>
+            <div class="stepper small">
+              <button class="stepper-btn" id="milesDown">−</button>
+              <span class="stepper-value" id="milesValue">0</span>
+              <button class="stepper-btn" id="milesUp">+</button>
+            </div>
+            <p class="hint">Extra miles beyond 30-mi radius @ $2.00/mi</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 6: Stairs -->
+      <section class="card">
+        <h2>6. Stairs</h2>
+        <div class="stairs-group">
+          <div class="stairs-location">
+            <label>Pickup — extra flights (after 1st)</label>
+            <div class="stepper small">
+              <button class="stepper-btn" id="stairsPickupDown">−</button>
+              <span class="stepper-value" id="stairsPickupValue">0</span>
+              <button class="stepper-btn" id="stairsPickupUp">+</button>
+            </div>
+          </div>
+          <div class="stairs-location">
+            <label>Dropoff — extra flights (after 1st)</label>
+            <div class="stepper small">
+              <button class="stepper-btn" id="stairsDropoffDown">−</button>
+              <span class="stepper-value" id="stairsDropoffValue">0</span>
+              <button class="stepper-btn" id="stairsDropoffUp">+</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 7: Heavy / Specialty Items -->
+      <section class="card">
+        <h2>6. Heavy &amp; Specialty Items</h2>
+        <div class="specialty-grid">
+          <div class="specialty-item">
+            <label>Upright Piano</label>
+            <div class="stepper small">
+              <button class="stepper-btn" id="pianoDown">−</button>
+              <span class="stepper-value" id="pianoValue">0</span>
+              <button class="stepper-btn" id="pianoUp">+</button>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="pianoStairs"> w/ Stairs
+            </label>
+          </div>
+          <div class="specialty-item">
+            <label>300–450 lbs</label>
+            <div class="stepper small">
+              <button class="stepper-btn" id="med1Down">−</button>
+              <span class="stepper-value" id="med1Value">0</span>
+              <button class="stepper-btn" id="med1Up">+</button>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="med1Stairs"> w/ Stairs
+            </label>
+          </div>
+          <div class="specialty-item">
+            <label>450–600 lbs</label>
+            <div class="stepper small">
+              <button class="stepper-btn" id="med2Down">−</button>
+              <span class="stepper-value" id="med2Value">0</span>
+              <button class="stepper-btn" id="med2Up">+</button>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="med2Stairs"> w/ Stairs
+            </label>
+          </div>
+          <div class="specialty-item">
+            <label>600+ lbs</label>
+            <div class="stepper small">
+              <button class="stepper-btn" id="heavyDown">−</button>
+              <span class="stepper-value" id="heavyValue">0</span>
+              <button class="stepper-btn" id="heavyUp">+</button>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="heavyStairs"> w/ Stairs
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 8: Packing Services -->
+      <section class="card">
+        <h2>8. Packing Services</h2>
+        <div class="packing-grid">
+          <div class="packing-item">
+            <label class="checkbox-label">
+              <input type="checkbox" id="packingMaterials"> Packing Materials
+            </label>
+            <p class="hint">Boxes, tape, bubble wrap — $75 small / $125 medium / $150 large</p>
+            <div class="toggle-group packing-size-group" id="packingSizeGroup" style="margin-top: 8px; display: none;">
+              <button class="toggle-btn packing-size-btn active" data-packsize="small">Small ($75)</button>
+              <button class="toggle-btn packing-size-btn" data-packsize="medium">Medium ($125)</button>
+              <button class="toggle-btn packing-size-btn" data-packsize="large">Large ($150)</button>
+            </div>
+          </div>
+          <div class="packing-item" style="margin-top: 12px;">
+            <label>Packing Labor Hours</label>
+            <div class="stepper small">
+              <button class="stepper-btn" id="packLaborDown">−</button>
+              <span class="stepper-value" id="packLaborValue">0</span>
+              <button class="stepper-btn" id="packLaborUp">+</button>
+            </div>
+            <p class="hint">$50/hr per packer</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 9: Cancellation -->
+      <section class="card">
+        <h2>9. Cancellation Fee</h2>
+        <div class="toggle-group">
+          <button class="toggle-btn cancel-btn active" data-cancel="none">No Fee</button>
+          <button class="toggle-btn cancel-btn" data-cancel="late">Late Cancel &lt;24hrs ($100)</button>
+          <button class="toggle-btn cancel-btn" data-cancel="noshow">No-Show ($150)</button>
+        </div>
+      </section>
+      </div><!-- end localSection -->
+
+      <!-- Shared: Customer Info -->
+      <section class="card">
+        <h2>Customer Info <span class="optional">(optional)</span></h2>
+        <div class="form-grid">
+          <input type="text" id="custName" placeholder="Customer Name">
+          <input type="tel" id="custPhone" placeholder="Phone">
+          <input type="text" id="custPickup" placeholder="Pickup Address">
+          <input type="text" id="custDropoff" placeholder="Dropoff Address">
+          <input type="date" id="custDate" placeholder="Move Date">
+          <textarea id="custNotes" placeholder="Notes (e.g., items, access issues)" rows="2"></textarea>
+        </div>
+      </section>
+
+      <!-- Estimate Summary -->
+      <section class="card estimate-card">
+        <h2>Estimate Summary</h2>
+        <div id="summaryBody">
+          <!-- populated by JS -->
+        </div>
+        <div class="estimate-total">
+          <span>TOTAL ESTIMATE</span>
+          <span id="totalAmount">$0.00</span>
+        </div>
+        <div class="estimate-net">
+          <span>Your Net (after 29% HAH fee)</span>
+          <span id="netAmount">$0.00</span>
+        </div>
+        <div class="action-buttons">
+          <button id="btnCopy">Copy Estimate</button>
+          <button id="btnPrint">Print / Save PDF</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 KBA Movers &mdash; West Des Moines, IA</p>
+      <p class="dot-info">USDOT #4420459 &mdash; MC #1737835</p>
+    </footer>
+  </div>
+
+  <script src="calculator.js"></script>
+  <script>
+    document.querySelector('.nav-toggle').addEventListener('click', function() {
+      document.querySelector('.nav-links').classList.toggle('active');
+    });
+  </script>
+</body>
+</html>
