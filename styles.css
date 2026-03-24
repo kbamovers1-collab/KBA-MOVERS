@@ -33,6 +33,12 @@ header {
   padding: 24px 0 16px;
 }
 
+header img {
+  display: block;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+}
+
 header h1 {
   font-size: 2rem;
   font-weight: 800;
@@ -193,6 +199,30 @@ header h1 {
   color: var(--text-light);
   font-size: 0.8rem;
   margin-top: 6px;
+}
+
+/* === Access / Distance === */
+.access-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.access-item label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* === Packing === */
+.packing-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.packing-item label:first-child {
+  font-weight: 600;
 }
 
 /* === Stairs === */
@@ -362,6 +392,39 @@ header h1 {
   background: #14304d;
 }
 
+/* === Long Distance === */
+.ld-distance-tag {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 12px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.ld-addons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ld-input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  width: 180px;
+  transition: border 0.15s;
+}
+
+.ld-input:focus {
+  border-color: var(--primary);
+}
+
 /* === Footer === */
 footer {
   text-align: center;
@@ -370,16 +433,50 @@ footer {
   font-size: 0.8rem;
 }
 
+.dot-info {
+  font-size: 0.75rem;
+  margin-top: 4px;
+  color: var(--text-light);
+}
+
+/* === FAQ Section === */
+.faq-section details {
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+
+.faq-section details:last-child {
+  border-bottom: none;
+}
+
+.faq-section summary {
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--primary);
+  padding: 4px 0;
+}
+
+.faq-section summary:hover {
+  color: var(--accent);
+}
+
+.faq-section details p {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
 /* === Print Styles === */
 @media print {
   body { background: #fff; }
   .app { max-width: 100%; padding: 0; }
   header { padding: 10px 0; }
   .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
-  .action-buttons, .toggle-group, .stepper, .crew-options,
-  .stairs-group, .specialty-grid, .form-grid,
-  section.card:not(.estimate-card):not(:nth-child(7)) { display: none; }
-  section.card:nth-child(7) .form-grid { display: grid; }
+  .action-buttons { display: none; }
   .estimate-card { border: 2px solid var(--primary); }
-  footer { display: none; }
+  #localSection .card:not(.estimate-card) { display: none; }
+  #longDistanceSection .card:not(.estimate-card) { display: none; }
+  footer .dot-info { display: block; }
 }
