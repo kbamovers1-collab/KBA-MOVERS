@@ -33,6 +33,12 @@ header {
   padding: 24px 0 16px;
 }
 
+header img {
+  display: block;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+}
+
 header h1 {
   font-size: 2rem;
   font-weight: 800;
